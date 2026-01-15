@@ -110,7 +110,17 @@ LLM_MODEL_NAME=qwen-plus
 # 每月免费额度即可支撑简单使用：https://app.getzep.com/
 ZEP_API_KEY=your_zep_api_key
 ```
-
+### 前后端服务调用
+- 修改frontend\src\api\index.js 中的 baseURL 为 ''，headers全部注释掉。
+'''
+const service = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || '',
+  timeout: 300000, // 5分钟超时（本体生成可能需要较长时间）
+  //headers: {
+  //  'Content-Type': 'application/json'
+  //}
+})
+'''
 ### 2. 安装依赖
 
 ```bash
@@ -137,7 +147,31 @@ npm run dev
 
 **服务地址：**
 - 前端：`http://localhost:3000`
+- 前端端口修改：主要修改·frontend/vite.config.js 文件的 server.port 参数为 8026
+- 前端network修改：新增frontend/vite.config.js 文件的 server.host 参数为 '0.0.0.0'
+'''
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [vue()],
+  server: {
+    host: '0.0.0.0',
+    port: 8026,
+    open: false,
+    proxy: {
+      '/api': {
+        target: 'http://localhost:8025',
+        changeOrigin: true,
+        secure: false
+      }
+    }
+  }
+})
+'''
 - 后端 API：`http://localhost:5001`
+- 后端的端口修改：主要修改backend/run.py 文件的 port 配置;frontend\vite.config.js;frontend\src\api\index.js
 
 **单独启动：**
 
