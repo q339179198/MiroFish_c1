@@ -112,6 +112,7 @@ ZEP_API_KEY=your_zep_api_key
 ```
 ### 前后端服务调用
 - 修改frontend\src\api\index.js 中的 baseURL 为 ''，headers全部注释掉。
+  
 '''
 const service = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL || '',
@@ -149,6 +150,7 @@ npm run dev
 - 前端：`http://localhost:3000`
 - 前端端口修改：主要修改·frontend/vite.config.js 文件的 server.port 参数为 8026
 - 前端network修改：新增frontend/vite.config.js 文件的 server.host 参数为 '0.0.0.0'
+  
 '''
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
